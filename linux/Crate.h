@@ -23,7 +23,7 @@ public:
 	~Crate(void);
 
 	
-	void    Draw(int);
+	void    Draw();
 	int     Intersecting(SCALAR, SCALAR, SCALAR, SCALAR, SCALAR, SCALAR, SCALAR, SCALAR, SCALAR);
 	int     intersecting;
 

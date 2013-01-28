@@ -18,8 +18,18 @@ void Enemy::Update(time_t time_passed) {}
 
 
 
-
-Crate& Enemy::ThrowObject() {
+/*
+ * Creates a crate object with a position and velocity
+ * and returns it.
+ *
+ * Returns
+ *   crate (value) 
+ *
+ *
+ * TODO: Change this to register the crate with the game_controller
+ *
+ */
+Crate Enemy::ThrowObject() {
 	
 	Crate crate;
 
@@ -31,7 +41,6 @@ Crate& Enemy::ThrowObject() {
 	
 	crate.SetPosition(position);
 	crate.SetVelocity(velocity);
-
 
 	return crate;
 }

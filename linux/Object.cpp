@@ -18,7 +18,7 @@ Object::Object(Vector velocity, Vector position, Vector rotation) {
  *  Calculate objects new position, velocity and acceleration based on current 
  *  position, velocity and acceleration
  */
-void Object::Update(double time_elapsed, int mouse_pressed)
+void Object::Update(double time_elapsed)
 {
 	
 	double distance_x, distance_y, distance_z;

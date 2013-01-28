@@ -32,7 +32,13 @@ Crate::Crate(Vector velocity, Vector position, Vector rotation)
 Crate::~Crate(void) {}
 
 
-void Crate::Draw(int mouse_pressed) {
+
+
+/*
+ * OpenGL draw function
+ *
+ */
+void Crate::Draw() {
 	glBindTexture(GL_TEXTURE_2D, 2);
 	glGetDoublev(GL_MODELVIEW_MATRIX, this->modelview);
 	glPushMatrix();
@@ -132,3 +138,4 @@ int Crate::Intersecting(SCALAR x, SCALAR y, SCALAR z, SCALAR xFar, SCALAR yFar, 
 		return 0;
 	}
 }
+

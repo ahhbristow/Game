@@ -26,7 +26,7 @@ public:
 	~Object(void);
 
 
-	void Update(double, int);
+	void Update(double);
 	void SetPosition(Vector position);
 	void SetVelocity(Vector velocity);
 	void SetMass(SCALAR mass);

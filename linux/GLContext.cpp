@@ -7,8 +7,6 @@ SDL_Surface *surface;	// This surface will tell us the details of the image
 GLenum texture_format;
 GLint  nOfColors;
 
-extern GameController gameController;
-
 
 //constructor
 GLContext::GLContext()
@@ -148,10 +146,17 @@ void DrawFloor() {
 
 }
 
-void GLContext::DrawScene(int mousePressed, int mouse_x, int mouse_y) {
+
+
+/* Draw scene, passing in a list of objects to draw */
+void GLContext::DrawScene(Player player, vector<Crate> crates) {
 	
-	Enemy *enemy = gameController.GetEnemy();
-	vector<Crate>& crates = gameController.GetCrates();
+	//Enemy *enemy = game_controller.GetEnemy();
+
+    // Get a reference to the list of crates
+    // Don't get a copy because when you click on a crate it won't be modified.
+    // Copy should work though because we're redrawing each time
+	//vector<Crate> crates = game_controller.GetCrates();
 
  
 	glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
@@ -160,9 +165,7 @@ void GLContext::DrawScene(int mousePressed, int mouse_x, int mouse_y) {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	
-	
-	
-		//draw cursor
+    //draw cursor
 	glColor3f(1.0f, 1.0f, 1.0f);
 	glBegin(GL_QUADS);
 		glTexCoord2f(0.25f, 0.25f); glVertex3f(-0.005f, 0.005f, -0.26f);
@@ -172,7 +175,7 @@ void GLContext::DrawScene(int mousePressed, int mouse_x, int mouse_y) {
 	glEnd();
 	
 	// Transform world according to player orientation
-	Player player = gameController.GetPlayer();
+	//Player player = game_controller.GetPlayer();
 	glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f);
 	glRotatef(player.rotation.y, 0.0f, 1.0f, 0.0f);
 	glTranslatef(0.0f, 0.0f, player.position.z);
@@ -182,61 +185,64 @@ void GLContext::DrawScene(int mousePressed, int mouse_x, int mouse_y) {
 
 	//enemy->Draw();
 	for(int i = 0; i < crates.size(); i++) {
-		crates[i].Draw(mousePressed);
+		crates[i].Draw();
 	}
 	
 
 	//Check crates for collisions
-	mouse_y = (800 - mouse_y);
+	//mouse_y = (800 - mouse_y);
 
-	GLdouble nearX, nearY, nearZ, farX, farY, farZ, objX, objY, objZ;
+	//GLdouble nearX, nearY, nearZ, farX, farY, farZ, objX, objY, objZ;
 
-	GLdouble    projection[16];
-	GLint       viewport[4];
-	GLdouble    model[16];
-	GLfloat     depth = 0;
+	//GLdouble    projection[16];
+	//GLint       viewport[4];
+	//GLdouble    model[16];
+	//GLfloat     depth = 0;
 
 		
 	//get depth value
-	glReadBuffer(GL_BACK);
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 4); 
-	glReadPixels(mouse_x, mouse_y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+	//glReadBuffer(GL_BACK);
+	//glPixelStorei(GL_UNPACK_ALIGNMENT, 4); 
+	//glReadPixels(mouse_x, mouse_y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
 
-	glGetDoublev(GL_MODELVIEW_MATRIX, model);
-	glGetDoublev(GL_PROJECTION_MATRIX, projection);
-	glGetIntegerv(GL_VIEWPORT, viewport);
+	//glGetDoublev(GL_MODELVIEW_MATRIX, model);
+	//glGetDoublev(GL_PROJECTION_MATRIX, projection);
+	//glGetIntegerv(GL_VIEWPORT, viewport);
 
 
-	gluUnProject(mouse_x, mouse_y, 0.0f, model, projection, viewport, &nearX, &nearY, &nearZ);
-	gluUnProject(mouse_x, mouse_y, 1.0f, model, projection, viewport, &farX, &farY, &farZ);
-	gluUnProject(mouse_x, mouse_y, depth, model, projection, viewport, &objX, &objY, &objZ);
+	//gluUnProject(mouse_x, mouse_y, 0.0f, model, projection, viewport, &nearX, &nearY, &nearZ);
+	//gluUnProject(mouse_x, mouse_y, 1.0f, model, projection, viewport, &farX, &farY, &farZ);
+	//gluUnProject(mouse_x, mouse_y, depth, model, projection, viewport, &objX, &objY, &objZ);
 	
-	cout << "Mouse: " << mouse_x << "," << mouse_y << "\n";
 	// Check all objects for intersection.  TODO: Move this out of here.  This class should
 	// just be used for rendering.
-	if (mousePressed) {
-		int intersecting = 0;
-		double nearest_z = -500000;
-		Crate *nearest_crate;
-		int hit = 0;
-		//Figure out if we've hit a crate
-		for(int i = 0; i < crates.size(); i++) {
-			intersecting = crates[i].Intersecting(nearX, nearY, nearZ, farX, farY, farZ, objX, objY, objZ);
-			
-			//TODO: Fix segmentation fault here with pointer to nearest_crate
-			if (intersecting && crates[i].position.z > nearest_z) {
-				nearest_z = crates[i].position.z;
-				nearest_crate = &crates[i];
-				hit = 1;
-				//crates[i].intersecting = 1;
-			}
-		}
-		
-		// Only set to intersecting if we've actually hit something
-		if (hit == 1) {
-			nearest_crate->intersecting = 1;
-		}
-	}
+//	if (mousePressed) {
+//		int intersecting = 0;
+//		double nearest_z = -500000;
+//		Crate nearest_crate;
+//		int hit = 0;
+//
+//
+//		//Figure out if we've hit a crate
+//		for(int i = 0; i < crates.size(); i++) {
+//			intersecting = crates[i].Intersecting(nearX, nearY, nearZ, farX, farY, farZ, objX, objY, objZ);
+//			
+//			//TODO: Fix segmentation fault here with pointer to nearest_crate
+//			if (intersecting && crates[i].position.z > nearest_z) {
+//				nearest_z = crates[i].position.z;
+//				nearest_crate = crates[i];
+//				hit = 1;
+//				//crates[i].intersecting = 1;
+//			}
+//		}
+//		
+//		// Only set to intersecting if we've actually hit something
+//        // We need a reference to the crate so we actually write back
+//        // to the crate list, and not to a copy of it
+//		if (hit == 1) {
+//			nearest_crate.intersecting = 1;
+//		}
+//	}
 
 	SDL_GL_SwapBuffers( );
 }
@@ -267,10 +273,7 @@ GLdouble* GLContext::GetModelviewMatrix() {
 }
 
 //create set of textures from volume data
-void GLContext::loadTextures(const char * filename, int tex)
-{
-	cout << "Loading textures...";
-
+void GLContext::loadTextures(const char * filename, int tex) {
 	 
 	if ( (surface = SDL_LoadBMP(filename)) ) { 
 	 
@@ -304,21 +307,15 @@ void GLContext::loadTextures(const char * filename, int tex)
 			}
 	        
 		// Have OpenGL generate a texture object handle for us
-		
-	 
 		// Bind the texture object
 		glBindTexture( GL_TEXTURE_2D, tex );
-	 
 		// Set the texture's stretching properties
 		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
 		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
-
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-
 		//generate mip maps for loaded texture
 		gluBuild2DMipmaps( GL_TEXTURE_2D, nOfColors, surface->w, surface->h, texture_format, GL_UNSIGNED_BYTE, surface->pixels );
-
 	} 
 	else {
 		printf("SDL could not load image.bmp: %s\n", SDL_GetError());
@@ -330,4 +327,51 @@ void GLContext::loadTextures(const char * filename, int tex)
 		SDL_FreeSurface( surface );
 	}
 	cout << "Complete!\n";
+}
+
+/*
+ * TODO: Move into GLContext class
+ */
+double* GLContext::GetObjectCoordinates(int mouse_x, int mouse_y) {
+    
+	//Check crates for collisions
+	mouse_y = (800 - mouse_y);
+
+	GLdouble nearX, nearY, nearZ, farX, farY, farZ, objX, objY, objZ;
+
+	GLdouble    projection[16];
+	GLint       viewport[4];
+	GLdouble    model[16];
+	GLfloat     depth = 0;
+
+		
+	//get depth value
+	glReadBuffer(GL_BACK);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 4); 
+	glReadPixels(mouse_x, mouse_y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+
+	glGetDoublev(GL_MODELVIEW_MATRIX, model);
+	glGetDoublev(GL_PROJECTION_MATRIX, projection);
+	glGetIntegerv(GL_VIEWPORT, viewport);
+
+    /* This is OpenGL specific.  Move this into a function in a different class */
+	gluUnProject(mouse_x, mouse_y, 0.0f, model, projection, viewport, &nearX, &nearY, &nearZ);
+	gluUnProject(mouse_x, mouse_y, 1.0f, model, projection, viewport, &farX, &farY, &farZ);
+	gluUnProject(mouse_x, mouse_y, depth, model, projection, viewport, &objX, &objY, &objZ);
+
+    double* object_coordinates;
+
+    object_coordinates [0] = nearX;
+    object_coordinates [1] = nearY;
+    object_coordinates [2] = nearZ;
+
+    object_coordinates [3] = farX;
+    object_coordinates [4] = farY;
+    object_coordinates [5] = farZ;
+
+    object_coordinates [6] = objX;
+    object_coordinates [7] = objY;
+    object_coordinates [8] = objZ;
+
+
 }

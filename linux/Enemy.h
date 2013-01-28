@@ -16,7 +16,7 @@ public:
 	double ChooseTime();
 	void Draw();
 	void Update(time_t);
-	Crate& ThrowObject();
+	Crate ThrowObject();
 
 private:
 	

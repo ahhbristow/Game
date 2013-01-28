@@ -6,10 +6,15 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include "SDL.h"
+#include <vector>
 
-#include "GameController.h"
 
-extern GameController gameController;
+// Dependencies
+#include "Crate.h"
+#include "Player.h"
+
+using namespace std;
+
 
 class Enemy;
 
@@ -25,7 +30,7 @@ public:
 	GLContext();
 	~GLContext(void);
 
-	void DrawScene(int, int, int);
+	void DrawScene(Player, vector<Crate>);
 	void increaseTheta();
 	void setupGL();
 	void setTheta(SCALAR);
@@ -39,6 +44,7 @@ public:
 	GLdouble * GetModelviewMatrix();
 
 	
+    double* GetObjectCoordinates(int, int);
 
 private:
 	//GLuint textures[SLICES];//storage for different textures

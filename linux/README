@@ -1,0 +1,12 @@
+Classes
+
+Game:
+ - Responsible for creating the user interface and handling the user input
+ - Creates a GameController object
+
+
+
+GameController:
+ - This is the main generic game class.  Stores all the game logic and executes the game loop.
+ - Effectively the game API.
+ - The Game object passes in user interface events
