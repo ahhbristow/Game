@@ -41,6 +41,12 @@ void GameController::LeftMouseClicked(int mouse_x, int mouse_y) {
     this->CheckObjectsForSelection(mouse_x, mouse_y);
 }
 
+void GameController::MouseMoved(int x, int y) {
+    this->player.rotation.y += x;
+    this->player.rotation.x += y;
+
+}
+
 void GameController::AddObject(Object object) {}
 
 /*

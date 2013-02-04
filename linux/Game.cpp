@@ -14,7 +14,8 @@ const int SKIP_TICKS = 1000 / FRAMES_PER_SECOND;
 // Forward declarations
 void CreateInterface();
 void CreateSDLWindow();
-void StartGameLoop(GameController, GLContext);
+void SDLCheckEvents(GameController&);
+void StartGameLoop(GameController&, GLContext&);
 void handleKeyPress(SDL_keysym*);
 
 /*
@@ -70,7 +71,7 @@ void CreateInterface () {
  *
  * TODO: This should be a member of game controller
  */
-void StartGameLoop(GameController game_controller, GLContext gl_context) {
+void StartGameLoop(GameController& game_controller, GLContext& gl_context) {
 
 	int next_game_tick;
 	double time_elapsed;
@@ -82,7 +83,11 @@ void StartGameLoop(GameController game_controller, GLContext gl_context) {
     int done = 0;
  	while ( !done ) {
 		
-		
+	
+        // Check events
+        SDLCheckEvents(game_controller);
+
+
 		int sleep_time = 0;
 		next_game_tick += SKIP_TICKS;
 		sleep_time = next_game_tick - SDL_GetTicks();
@@ -128,6 +133,9 @@ void handleKeyPress(SDL_keysym* key) {
 		case SDLK_DOWN:
 			//player.velocity.z = 5.0f;
 			break;
+        case SDLK_ESCAPE:
+            Quit(0);
+            break;
 	}
 }
 
@@ -136,7 +144,7 @@ void handleKeyPress(SDL_keysym* key) {
  * Checks for any user input events
  *
  */
-void SDLCheckEvents() {
+void SDLCheckEvents(GameController &game_controller) {
 	int mouse_x = 0;
 	int mouse_y = 0;
 	int mouse_pressed = 0;
@@ -186,19 +194,22 @@ void SDLCheckEvents() {
 					//mouse_y = event.button.y;
 					break;
 				case SDL_MOUSEMOTION:
-					//printf("Mouse moved by %d,%d to (%d,%d)\n", 
-					 //   event.motion.xrel, event.motion.yrel,
-					   // event.motion.x, event.motion.y);
+					printf("Mouse moved by %d,%d to (%d,%d)\n", 
+					   event.motion.xrel, event.motion.yrel,
+					    event.motion.x, event.motion.y);
 					
-						//player.rotation.y -= (event.motion.xrel);
-						//player.rotation.x -= (event.motion.yrel);
-						//SDL_WarpMouse(500,400);
+                       //player.rotation.y -= (event.motion.xrel);
+					//player.rotation.x -= (event.motion.yrel);
+					SDL_WarpMouse(500,400);
+
+                    // Pass in the delta values for x and y
+                    //game_controller.MouseMoved(event.motion.xrel, event.motion.yrel);
 					
 					break;
-				//case SDL_QUIT:
+				case SDL_QUIT:
 					/* handle quit requests */
-				//	done = 1;
-				//	break;
+					Quit(1);
+					break;
 				default:
 					break;
 			}

@@ -33,4 +33,9 @@ void Player::Update(double time_elapsed, int mouse_pressed) {
 	position.y = position.y + distance_y;
 	position.z = position.z + distance_z;
 
+
+    // Hack in rotation
+    rotation.y += 0.2f;
+    rotation.x += 0.2f;
+
 }

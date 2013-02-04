@@ -30,6 +30,7 @@ public:
 	vector<Crate>  GetCrates();
 
     void LeftMouseClicked(int, int);
+    void MouseMoved(int, int);
 
 
 private:

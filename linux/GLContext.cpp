@@ -18,7 +18,7 @@ GLContext::GLContext()
 	this->setupGL();
 	glGenTextures( 10, &texture );
 	
-	this->loadTextures("textures/dawn.bmp", 1);
+	this->loadTextures("textures/stormydays_large.bmp", 1);
 	this->loadTextures("textures/crate.bmp", 2);
 	this->loadTextures("textures/grass.bmp", 3);
 
@@ -43,7 +43,7 @@ void GLContext::setupGL()
 	cout << "GLContext setup...\n";
 	glEnable(GL_TEXTURE_2D);
 
-	//glShadeModel(GL_SMOOTH);							// Enable Smooth Shading
+	glShadeModel(GL_SMOOTH);							// Enable Smooth Shading
 	glClearColor(0.5f,0.5f,0.5f,1.0f);					// We'll Clear To The Color Of The Fog
 	glClearDepth(1.0f);									// Depth Buffer Setup
 	glEnable(GL_DEPTH_TEST);							// Enables Depth Testing
@@ -70,8 +70,9 @@ void GLContext::setupGL()
 
 
 	glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
 	//gluOrtho2D(0.0f, 600.0f, 600.0f, 0.0f);
-	gluPerspective(45.0f, 1, 0.25f, 500000.0f);
+	gluPerspective(45.0f, 1.0f, 1.0f, 100.0f);
 	
 	cout << "GLContext setup complete.\n";
 	
@@ -83,69 +84,90 @@ void GLContext::DrawSkybox() {
 
 	glBindTexture( GL_TEXTURE_2D, 1 );
 
-	glPushMatrix();
-	glScalef(10000.0f, 6000.0f, 10000.0f);
+	//glPushMatrix();
+	//glScalef(10000.0f, 6000.0f, 10000.0f);
 	//glTranslatef(0.0f, -0.1f, 0.0f);
 	//
 
+    glDisable(GL_DEPTH_TEST);
 	glBegin(GL_QUADS);
 
-		glColor3f(1.0f, 1.0f, 1.0f);
+		//glColor3f(1.0f, 0.0f, 1.0f);
+        //glScalef(10.0f, 10.0f, 10.0f);
 
-		//draw ceiling
-		glTexCoord2f(0.25f, 0.25f); glVertex3f(-1.0f, 1.0f, -1.0f);
-		glTexCoord2f(0.75f, 0.25f); glVertex3f(1.0f, 1.0f, -1.0f);
-		glTexCoord2f(0.75f, 0.75f); glVertex3f(1.0f, 1.0f, 1.0f);
-		glTexCoord2f(0.25f, 0.75f); glVertex3f(-1.0f, 1.0f, 1.0f);
 
-		//draw side walls
-	
-		glTexCoord2f(0.0f, 0.25f); glVertex3f(-1.0f, 0.0f, -1.0f);
-		glTexCoord2f(0.25f, 0.25f); glVertex3f(-1.0f, 1.0f, -1.0f);
-		glTexCoord2f(0.25f, 0.75f); glVertex3f(-1.0f, 1.0f, 1.0f);
-		glTexCoord2f(0.0f, 0.75f); glVertex3f(-1.0f, 0.0f, 1.0f);
+		// Draw far wall
+        
+        //bottom right
+		glTexCoord2f(0.5f, 0.66f);
+        glVertex3f(1.0f, -1.0f, -1.0f);
+        //bottom left
+		glTexCoord2f(0.25f, 0.66f);
+        glVertex3f(-1.0f, -1.0f, -1.0f);
+        //top left
+		glTexCoord2f(0.25f, 0.33f);
+        glVertex3f(-1.0f, 1.0f, -1.0f);
+        //top right
+        glTexCoord2f(0.5f, 0.33f);
+        glVertex3f(1.0f, 1.0f, -1.0f);
 
-		glTexCoord2f(1.0f, 0.25f); glVertex3f(1.0f, 0.0f, -1.0f);
-		glTexCoord2f(0.75f, 0.25f); glVertex3f(1.0f, 1.0f, -1.0f);
-		glTexCoord2f(0.75f, 0.75f); glVertex3f(1.0f, 1.0f, 1.0f);
-		glTexCoord2f(1.0f, 0.75f); glVertex3f(1.0f, 0.0f, 1.0f);
+        // Draw left wall
+        //front top
+		glTexCoord2f(0.25f, 0.33f);
+        glVertex3f(-1.0f, 1.0f, -1.0f);
+        //behind top
+		glTexCoord2f(0.0f, 0.33f);
+        glVertex3f(-1.0f, 1.0f, 1.0f);
+        //behind bottom
+		glTexCoord2f(0.0f, 0.66f);
+        glVertex3f(-1.0f, -1.0f, 1.0f);
+        //front bottom
+        glTexCoord2f(0.25f, 0.66f);
+        glVertex3f(-1.0f, -1.0f, -1.0f);
 
-		//draw end walls
-
-		glTexCoord2f(0.25f, 0.0f); glVertex3f(-1.0f, 0.0f, -1.0f);
-		glTexCoord2f(0.25f, 0.25f); glVertex3f(-1.0f, 1.0f, -1.0f);
-		glTexCoord2f(0.75f, 0.25f); glVertex3f(1.0f, 1.0f,-1.0f); 
-		glTexCoord2f(0.75f, 0.0f); glVertex3f(1.0f, 0.0f, -1.0f);
-
-		//glColor3f(0.0f, 0.0f, 1.0f);
-		glTexCoord2f(0.25f, 1.0f); glVertex3f(-1.0f, 0.0f, 1.0f);
-		glTexCoord2f(0.25f, 0.75f); glVertex3f(-1.0f, 1.0f, 1.0f);
-		glTexCoord2f(0.75f, 0.75f); glVertex3f(1.0f, 1.0f, 1.0f);
-		glTexCoord2f(0.75f, 1.0f); glVertex3f(1.0f, 0.0f, 1.0f);
 
 	glEnd();
-
-	glPopMatrix();
+    glEnable(GL_DEPTH_TEST);
+    
+    //glColor3f(1.0f, 1.0f, 1.0f);
+	//glBegin(GL_QUADS);
+	 //   glVertex3f(-0.005f, 0.005f, -0.26f);
+	  //  glVertex3f(0.005f, 0.005f, -0.26f);
+	 //   glVertex3f(0.005f, -0.005f, -0.26f);
+	 //   glVertex3f(-0.005f, -0.005f, -0.26f);
+	//glEnd();
 }
 
 void DrawFloor() {
 
-	glBindTexture(GL_TEXTURE_2D, 3);
-	glPushMatrix();
-	glTranslatef(0.0f,-2.0f,0.0f);
-	glScalef(10000.0f, 10000.0f, 10000.0f);
+	glBindTexture(GL_TEXTURE_2D, 2);
+	//glPushMatrix();
+	//glTranslatef(0.0f,-2.0f,0.0f);
+	//glScalef(10000.0f, 10000.0f, 10000.0f);
 	
 	glColor3f(1.0f, 1.0f, 1.0f);
 	glBegin(GL_QUADS);	
-		glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, 0.0f, 1.0f);
-		glTexCoord2f(0.0f, 10000.0f); glVertex3f(-1.0f, 0.0f, -1.0f);
-		glTexCoord2f(10000.0f, 10000.0f); glVertex3f(1.0f, 0.0f, -1.0f);
-		glTexCoord2f(10000.0f, 0.0f); glVertex3f(1.0f, 0.0f, 1.0f);
+	    glVertex3f(-1.0f, 0.0f, 1.0f);
+		glVertex3f(-1.0f, 0.0f, -1.0f);
+		glVertex3f(1.0f, 0.0f, -1.0f);
+		glVertex3f(1.0f, 0.0f, 1.0f);
 	glEnd();
-	glPopMatrix();
+	//glPopMatrix();
 
 }
 
+void DrawCursor() {
+	
+    glColor3f(1.0f, 1.0f, 1.0f);
+	glBegin(GL_QUADS);
+		glTexCoord2f(0.25f, 0.25f); glVertex3f(-0.005f, 0.005f, -0.26f);
+		glTexCoord2f(0.75f, 0.25f); glVertex3f(0.005f, 0.005f, -0.26f);
+		glTexCoord2f(0.75f, 0.75f); glVertex3f(0.005f, -0.005f, -0.26f);
+		glTexCoord2f(0.25f, 0.75f); glVertex3f(-0.005f, -0.005f, -0.26f);
+	glEnd();
+	
+
+}
 
 
 /* Draw scene, passing in a list of objects to draw */
@@ -164,28 +186,23 @@ void GLContext::DrawScene(Player player, vector<Crate> crates) {
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	
-    //draw cursor
-	glColor3f(1.0f, 1.0f, 1.0f);
-	glBegin(GL_QUADS);
-		glTexCoord2f(0.25f, 0.25f); glVertex3f(-0.005f, 0.005f, -0.26f);
-		glTexCoord2f(0.75f, 0.25f); glVertex3f(0.005f, 0.005f, -0.26f);
-		glTexCoord2f(0.75f, 0.75f); glVertex3f(0.005f, -0.005f, -0.26f);
-		glTexCoord2f(0.25f, 0.75f); glVertex3f(-0.005f, -0.005f, -0.26f);
-	glEnd();
+
+    //DrawCursor();
 	
 	// Transform world according to player orientation
 	//Player player = game_controller.GetPlayer();
+	glTranslatef(0.0f, 0.0f, -10.0f);
 	glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f);
 	glRotatef(player.rotation.y, 0.0f, 1.0f, 0.0f);
-	glTranslatef(0.0f, 0.0f, player.position.z);
+
+	printf("Player rotation: %lf,%lf,%lf\n", player.rotation.x, player.rotation.y, player.rotation.z);
 
 	DrawSkybox();
-	DrawFloor();
+    //DrawFloor();
 
 	//enemy->Draw();
 	for(int i = 0; i < crates.size(); i++) {
-		crates[i].Draw();
+		//crates[i].Draw();
 	}
 	
 
