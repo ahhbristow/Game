@@ -32,6 +32,7 @@ public:
     void LeftMouseClicked(int, int);
     void MouseMoved(int, int);
 
+    int         cr_time;
 
 private:
 

@@ -4,6 +4,7 @@ Player::Player(void) {
 	this->position = Vector(0, 0, 0);
 	this->rotation = Vector(0, 0, 0);
 	this->velocity = Vector(0, 0, 0);
+    
 }
 
 Player::~Player(void) {}
@@ -32,10 +33,10 @@ void Player::Update(double time_elapsed, int mouse_pressed) {
 	position.x = position.x + distance_x;
 	position.y = position.y + distance_y;
 	position.z = position.z + distance_z;
+}
 
-
-    // Hack in rotation
-    rotation.y += 0.2f;
-    rotation.x += 0.2f;
-
+void Player::LookMove(int x, int y) {
+    this->rotation.x += (y * 0.1f);
+    this->rotation.y += (x * 0.1f);
+//    SDL_WarpCursor(500,400);
 }

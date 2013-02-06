@@ -72,7 +72,7 @@ void GLContext::setupGL()
 	glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 	//gluOrtho2D(0.0f, 600.0f, 600.0f, 0.0f);
-	gluPerspective(45.0f, 1.0f, 1.0f, 100.0f);
+	gluPerspective(45.0f, 1.0f, 0.25f, 50.0f);
 	
 	cout << "GLContext setup complete.\n";
 	
@@ -89,7 +89,7 @@ void GLContext::DrawSkybox() {
 	//glTranslatef(0.0f, -0.1f, 0.0f);
 	//
 
-    glDisable(GL_DEPTH_TEST);
+    //glDisable(GL_DEPTH_TEST);
 	glBegin(GL_QUADS);
 
 		//glColor3f(1.0f, 0.0f, 1.0f);
@@ -125,9 +125,22 @@ void GLContext::DrawSkybox() {
         glTexCoord2f(0.25f, 0.66f);
         glVertex3f(-1.0f, -1.0f, -1.0f);
 
+        // Draw right wall
+        //front top
+		glTexCoord2f(0.5f, 0.33f);
+        glVertex3f(1.0f, 1.0f, -1.0f);
+        //behind top
+		glTexCoord2f(0.75f, 0.33f);
+        glVertex3f(1.0f, 1.0f, 1.0f);
+        //behind bottom
+		glTexCoord2f(0.75f, 0.66f);
+        glVertex3f(1.0f, -1.0f, 1.0f);
+        //front bottom
+        glTexCoord2f(0.5f, 0.66f);
+        glVertex3f(1.0f, -1.0f, -1.0f);
 
 	glEnd();
-    glEnable(GL_DEPTH_TEST);
+    //glEnable(GL_DEPTH_TEST);
     
     //glColor3f(1.0f, 1.0f, 1.0f);
 	//glBegin(GL_QUADS);
@@ -191,11 +204,11 @@ void GLContext::DrawScene(Player player, vector<Crate> crates) {
 	
 	// Transform world according to player orientation
 	//Player player = game_controller.GetPlayer();
-	glTranslatef(0.0f, 0.0f, -10.0f);
-	glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f);
+//	glTranslatef(0.0f, 0.0f, -10.0f);
+    glRotatef(player.rotation.x, 1.0f, 0.0f, 0.0f);
 	glRotatef(player.rotation.y, 0.0f, 1.0f, 0.0f);
 
-	printf("Player rotation: %lf,%lf,%lf\n", player.rotation.x, player.rotation.y, player.rotation.z);
+    //printf("DRAW: Player rotation: %lf,%lf,%lf\n", player.rotation.x, player.rotation.y, player.rotation.z);
 
 	DrawSkybox();
     //DrawFloor();

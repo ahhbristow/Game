@@ -10,6 +10,8 @@ GameController::GameController(GLContext gl_context) {
 	
     this->gl_context = gl_context;
 
+    this->cr_time = SDL_GetTicks();
+
 	Crate crate;
 	
 	Vector position(0.0f, 0.0f, -50.0f);
@@ -42,8 +44,8 @@ void GameController::LeftMouseClicked(int mouse_x, int mouse_y) {
 }
 
 void GameController::MouseMoved(int x, int y) {
-    this->player.rotation.y += x;
-    this->player.rotation.x += y;
+
+    this->player.LookMove(x, y);
 
 }
 
@@ -86,18 +88,6 @@ void GameController::UpdateObjects(double time_elapsed) {
 	time_t current_time = time(NULL);
 	last_time = current_time;
 
-	
-	//aiming code
-	int mouse_x, mouse_y;
-	SDL_GetMouseState(&mouse_x, &mouse_y);
-	int xrel = 500 - mouse_x;
-	int yrel = 400 - mouse_y;
-	
-	player.rotation.y -= (xrel * 0.1f);
-	player.rotation.x -= (yrel * 0.1f);
-	SDL_WarpMouse(500,400);
-	
-	// Update the enemy object
 	en.Update(time_elapsed);
 	player.Update(time_elapsed, 0);
 	

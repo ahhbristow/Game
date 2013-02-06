@@ -53,9 +53,9 @@ void Object::Update(double time_elapsed)
 	position.y = position.y + distance_y;
 	position.z = position.z + distance_z;
 
-	rotation.x += 1.0f;
-	rotation.y += 1.0f;
-	rotation.z += 1.0f;
+	//rotation.x += 1.0f;
+	//rotation.y += 1.0f;
+	//rotation.z += 1.0f;
 
 }
 

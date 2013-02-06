@@ -15,5 +15,6 @@ public:
 
 	void Fire(int, int);
 	void Update(double, int);
+    void LookMove(int, int);
 };
 #endif
